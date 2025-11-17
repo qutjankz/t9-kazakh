@@ -1,0 +1,35 @@
+.suggestions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  flex-wrap: wrap;
+  min-height: 50px;
+}
+
+.suggestion-item {
+  background: #007AFF;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+  transition: all 0.2s;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-item:active {
+  background: #0051D5;
+  transform: scale(0.95);
+}

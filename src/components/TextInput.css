@@ -1,0 +1,22 @@
+.text-input {
+  width: 100%;
+  flex: 1;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 18px;
+  resize: none;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.text-input:focus {
+  border-color: #007AFF;
+}
+
+@media (max-width: 600px) {
+  .text-input {
+    font-size: 16px;
+  }
+}

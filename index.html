@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Қазақша T9</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="text-area-wrapper">
+            <textarea id="textInput" placeholder="Мәтін енгізіңіз..." rows="5"></textarea>
+            <div id="suggestions" class="suggestions"></div>
+        </div>
+
+        <div class="keyboard">
+            <!-- Первый ряд -->
+            <div class="keyboard-row">
+                <button class="key" data-key="й">Й</button>
+                <button class="key" data-key="ц">Ц</button>
+                <button class="key" data-key="у">У</button>
+                <button class="key" data-key="к">К</button>
+                <button class="key" data-key="е">Е</button>
+                <button class="key" data-key="н">Н</button>
+                <button class="key" data-key="г">Г</button>
+                <button class="key" data-key="ш">Ш</button>
+                <button class="key" data-key="щ">Щ</button>
+                <button class="key" data-key="з">З</button>
+                <button class="key" data-key="х">Х</button>
+            </div>
+
+            <!-- Второй ряд -->
+            <div class="keyboard-row">
+                <button class="key" data-key="ф">Ф</button>
+                <button class="key" data-key="ы">Ы</button>
+                <button class="key" data-key="в">В</button>
+                <button class="key" data-key="а">А</button>
+                <button class="key" data-key="п">П</button>
+                <button class="key" data-key="р">Р</button>
+                <button class="key" data-key="о">О</button>
+                <button class="key" data-key="л">Л</button>
+                <button class="key" data-key="д">Д</button>
+                <button class="key" data-key="ж">Ж</button>
+                <button class="key" data-key="э">Э</button>
+            </div>
+
+            <!-- Третий ряд -->
+            <div class="keyboard-row">
+                <button class="key" data-key="я">Я</button>
+                <button class="key" data-key="ч">Ч</button>
+                <button class="key" data-key="с">С</button>
+                <button class="key" data-key="м">М</button>
+                <button class="key" data-key="и">И</button>
+                <button class="key" data-key="т">Т</button>
+                <button class="key" data-key="ь">Ь</button>
+                <button class="key" data-key="б">Б</button>
+                <button class="key" data-key="ю">Ю</button>
+            </div>
+
+            <!-- Четвертый ряд - казахские буквы -->
+            <div class="keyboard-row">
+                <button class="key special" data-key="ә">Ә</button>
+                <button class="key special" data-key="ғ">Ғ</button>
+                <button class="key special" data-key="қ">Қ</button>
+                <button class="key special" data-key="ң">Ң</button>
+                <button class="key special" data-key="ө">Ө</button>
+                <button class="key special" data-key="ұ">Ұ</button>
+                <button class="key special" data-key="ү">Ү</button>
+                <button class="key special" data-key="һ">Һ</button>
+                <button class="key special" data-key="і">І</button>
+            </div>
+
+            <!-- Нижний ряд -->
+            <div class="keyboard-row">
+                <button class="key wide" id="spaceKey" data-key=" ">Пробел</button>
+                <button class="key backspace" id="backspaceKey">⌫</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
