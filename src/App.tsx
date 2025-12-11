@@ -4,11 +4,14 @@ import { Dictionary, Suggestion } from './types';
 import TextInput from './components/TextInput';
 import Suggestions from './components/Suggestions';
 import Keyboard from './components/Keyboard';
+import Dictation from './components/Dictation';
+import Game from './components/Game';
 
 function App() {
   const [text, setText] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [dictionary, setDictionary] = useState<Dictionary>({});
+  const [activeTab, setActiveTab] = useState<'keyboard' | 'dictation' | 'game'>('keyboard');
   const [cursorPos, setCursorPos] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -181,23 +184,55 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="text-area-wrapper">
-        <TextInput
-          ref={textareaRef}
-          value={text}
-          onChange={handleTextChange}
-          cursorPos={cursorPos}
-          onCursorChange={setCursorPos}
-        />
-        <Suggestions
-          suggestions={suggestions}
-          onSuggestionClick={handleSuggestionClick}
-        />
+      <div className="top-tabs" style={{ marginBottom: 12 }}>
+        <button
+          className={`tab-btn ${activeTab === 'keyboard' ? 'active' : ''}`}
+          onClick={() => setActiveTab('keyboard')}
+        >
+          Клавиатура
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'dictation' ? 'active' : ''}`}
+          onClick={() => setActiveTab('dictation')}
+        >
+          Диктант
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'game' ? 'active' : ''}`}
+          onClick={() => setActiveTab('game')}
+        >
+          Ойын
+        </button>
       </div>
-      <Keyboard
-        onKeyPress={handleKeyPress}
-        onBackspace={handleBackspace}
-      />
+      {activeTab === 'keyboard' && (
+        <>
+          <div className="text-area-wrapper">
+            <TextInput
+              ref={textareaRef}
+              value={text}
+              onChange={handleTextChange}
+              cursorPos={cursorPos}
+              onCursorChange={setCursorPos}
+            />
+            <Suggestions
+              suggestions={suggestions}
+              onSuggestionClick={handleSuggestionClick}
+            />
+          </div>
+          <Keyboard
+            onKeyPress={handleKeyPress}
+            onBackspace={handleBackspace}
+          />
+        </>
+      )}
+
+      {activeTab === 'dictation' && (
+        <Dictation dictionary={dictionary} onBack={() => setActiveTab('keyboard')} />
+      )}
+
+      {activeTab === 'game' && (
+        <Game dictionary={dictionary} />
+      )}
     </div>
   );
 }

@@ -1,0 +1,77 @@
+.dictation-root {
+    max-width: 1280px;
+    width: calc(100% - 36px);
+    margin: 18px auto;
+}
+
+.dictation-input {
+    width: 100%;
+    min-height: 260px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #e6e9ef;
+    resize: vertical;
+    font-size: 16px;
+    box-shadow: inset 0 1px 0 rgba(16, 24, 40, 0.02);
+}
+
+.dictation-check-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 14px
+}
+
+.dictation-results {
+    margin-top: 18px;
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #eef2ff
+}
+
+.result-row {
+    margin-bottom: 6px
+}
+
+.errors-list ul {
+    margin: 8px 0 0 18px
+}
+
+.err-word {
+    color: #b91c1c;
+    font-weight: 700
+}
+
+.err-sugg {
+    color: #065f46;
+    margin-left: 8px
+}
+
+.err-missing {
+    color: #999;
+    font-style: italic;
+}
+
+.highlighted-text {
+    margin: 10px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    line-height: 1.8;
+    font-size: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.highlighted-text .error-word {
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.primary-btn {
+    min-width: 220px
+}
