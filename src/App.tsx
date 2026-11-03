@@ -6,11 +6,13 @@ import Suggestions from './components/Suggestions';
 import Keyboard from './components/Keyboard';
 import Dictation from './components/Dictation';
 import Game from './components/Game';
+import { useKazakhSpellchecker } from './spellcheck/useKazakhSpellchecker';
 
 function App() {
   const [text, setText] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [dictionary, setDictionary] = useState<Dictionary>({});
+  const { checker } = useKazakhSpellchecker();
   const [activeTab, setActiveTab] = useState<'keyboard' | 'dictation' | 'game'>('keyboard');
   const [cursorPos, setCursorPos] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -87,6 +89,15 @@ function App() {
           end,
           isPartial: true,
         });
+      }
+    }
+
+    // Если в dictionary.json нет готовой пары — проверяем слово по полному
+    // Hunspell-словарю (54 тыс. слов с казахскими суффиксами), а не только
+    // по заранее заготовленным ошибкам
+    if (newSuggestions.length === 0 && checker && word.length >= 3 && !checker.isCorrect(word)) {
+      for (const candidate of checker.suggest(word).slice(0, 5)) {
+        newSuggestions.push({ word: candidate, start, end });
       }
     }
 

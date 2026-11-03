@@ -1,0 +1,15 @@
+Kazakh (kk_KZ) Hunspell dictionary
+Source: https://github.com/kergalym/myspell-kk
+
+Developed under the OpenOffice:Lingucomponent:Spell Checking/Dictionaries
+subproject. Word list amended with Kazakh names created for Aspell by
+Alexey Lipchansky. Affix file developed by Akmaral Mussayeva based on
+appendixes to the dictionary of Kaldybai Bektaiuly. Based on the word
+list of aspell-kk_KZ-0.2, containing over 53 thousand main words.
+
+Published under one of the following open source licenses (user's choice):
+  - GNU GPL version 2.0 or later
+  - GNU LGPL version 2.1 or later
+  - Mozilla MPL version 1.1 or later
+
+Files kept verbatim in this directory: kk_KZ.aff, kk_KZ.dic

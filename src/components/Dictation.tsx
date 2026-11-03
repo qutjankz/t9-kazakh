@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dictionary } from '../types';
+import { useKazakhSpellchecker } from '../spellcheck/useKazakhSpellchecker';
 import './Dictation.css';
 
 type Props = {
@@ -11,6 +12,7 @@ const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
   const [text, setText] = useState('');
   const [errors, setErrors] = useState<Array<{ word: string, suggestion?: string }>>([]);
   const [checked, setChecked] = useState(false);
+  const { checker, loading: dictLoading, error: dictError } = useKazakhSpellchecker();
 
   const normalize = (w: string) => w.toLowerCase();
 
@@ -28,10 +30,17 @@ const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
       if (n.length === 0) continue;
 
       if (keyMap[n]) {
-        // token is a known incorrect form
+        // known incorrect form from dictionary.json — exact curated correction
         foundErrors.push({ word: raw, suggestion: keyMap[n] });
+        continue;
       }
-      // Removed: else clause that treated unknown words as errors
+
+      // Полноценная проверка по словарю Hunspell (53k+ слов и суффиксы казахского языка),
+      // а не только по заранее известным парам ошибок
+      if (checker && !checker.isCorrect(n)) {
+        const [suggestion] = checker.suggest(n);
+        foundErrors.push({ word: raw, suggestion });
+      }
     }
 
     setErrors(foundErrors);
@@ -73,8 +82,17 @@ const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
 
       {renderHighlightedText()}
 
+      {dictLoading && (
+        <div className="result-row" style={{ color: '#888' }}>Сөздік жүктелініп жатыр… (54 мың сөз)</div>
+      )}
+      {dictError && (
+        <div className="result-row" style={{ color: '#b91c1c' }}>
+          Толық сөздік жүктелмеді, тек белгілі қателер тексеріледі.
+        </div>
+      )}
+
       <div className="dictation-check-wrap">
-        <button className="primary-btn" onClick={handleCheck}>Тексеру</button>
+        <button className="primary-btn" onClick={handleCheck} disabled={dictLoading}>Тексеру</button>
       </div>
 
       {checked && (
@@ -85,7 +103,7 @@ const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
 
           {errors.length > 0 && (
             <div className="errors-list">
-              <strong>Қаталар:</strong>
+              <strong>Қателер:</strong>
               <ul>
                 {errors.map((e, i) => (
                   <li key={i}><span className="err-word">{e.word}</span>{e.suggestion && <span className="err-sugg"> → {e.suggestion}</span>}</li>
