@@ -10,7 +10,7 @@ type Props = {
 
 const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
   const [text, setText] = useState('');
-  const [errors, setErrors] = useState<Array<{ word: string, suggestion?: string }>>([]);
+  const [errors, setErrors] = useState<Array<{ word: string, suggestions: string[] }>>([]);
   const [checked, setChecked] = useState(false);
   const { checker, loading: dictLoading, error: dictError } = useKazakhSpellchecker();
 
@@ -18,7 +18,7 @@ const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
 
   const handleCheck = () => {
     const tokens = (text || '').split(/\s+/).filter(Boolean);
-    const foundErrors: Array<{ word: string, suggestion?: string }> = [];
+    const foundErrors: Array<{ word: string, suggestions: string[] }> = [];
 
     // prepare map of incorrect words to correct words
     const keyMap: { [k: string]: string } = {};
@@ -31,20 +31,29 @@ const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
 
       if (keyMap[n]) {
         // known incorrect form from dictionary.json — exact curated correction
-        foundErrors.push({ word: raw, suggestion: keyMap[n] });
+        foundErrors.push({ word: raw, suggestions: [keyMap[n]] });
         continue;
       }
 
-      // Полноценная проверка по словарю Hunspell (53k+ слов и суффиксы казахского языка),
-      // а не только по заранее известным парам ошибок
+      // Полноценная проверка по словарю Hunspell (53k+ слов и суффиксы казахского языка).
+      // Показываем несколько кандидатов — первый по релевантности не всегда тот,
+      // что имел в виду пользователь.
       if (checker && !checker.isCorrect(n)) {
-        const [suggestion] = checker.suggest(n);
-        foundErrors.push({ word: raw, suggestion });
+        foundErrors.push({ word: raw, suggestions: checker.suggest(n).slice(0, 5) });
       }
     }
 
     setErrors(foundErrors);
     setChecked(true);
+  };
+
+  const applySuggestion = (errorIndex: number, suggestion: string) => {
+    const target = errors[errorIndex].word;
+    const idx = text.indexOf(target);
+    if (idx === -1) return;
+    setText(text.slice(0, idx) + suggestion + text.slice(idx + target.length));
+    setChecked(false);
+    setErrors([]);
   };
 
   const renderHighlightedText = () => {
@@ -106,7 +115,24 @@ const Dictation: React.FC<Props> = ({ dictionary, onBack }) => {
               <strong>Қателер:</strong>
               <ul>
                 {errors.map((e, i) => (
-                  <li key={i}><span className="err-word">{e.word}</span>{e.suggestion && <span className="err-sugg"> → {e.suggestion}</span>}</li>
+                  <li key={i}>
+                    <span className="err-word">{e.word}</span>
+                    {e.suggestions.length > 0 && (
+                      <span className="err-sugg-list">
+                        {' → '}
+                        {e.suggestions.map((s, si) => (
+                          <button
+                            key={si}
+                            type="button"
+                            className="err-sugg-btn"
+                            onClick={() => applySuggestion(i, s)}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </span>
+                    )}
+                  </li>
                 ))}
               </ul>
             </div>
