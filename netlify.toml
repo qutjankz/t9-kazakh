@@ -8,12 +8,11 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  # CommonJS packages that use dynamic require() break when esbuild inlines them
+  # into an ESM bundle; shipping them as regular node_modules avoids that.
+  external_node_modules = ["express", "serverless-http", "cookie-parser", "jsonwebtoken", "bcryptjs"]
 
-# API → Express running as a Netlify Function (same origin, so the session cookie just works)
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
+# The API function claims /api/* itself (export const config in netlify/functions/api.ts).
 
 # SPA fallback for react-router
 [[redirects]]
