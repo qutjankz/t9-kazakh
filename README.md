@@ -1,66 +1,71 @@
-# Қазақша T9 - Казахская мобильная клавиатура
+# qazaqsha — қазақ тілін ойнап үйрен
 
-Веб-приложение для мобильных устройств с автокоррекцией казахских слов. При вводе неправильного слова автоматически предлагаются правильные варианты.
+Duolingo форматындағы қазақ тілін үйрену қосымшасы: тіркелу/кіру, 15 деңгейлік карта,
+жаттығулар, XP, күндік серия (streak), жетістіктер, профиль және аватарлар.
 
-## Возможности
+## Мүмкіндіктер
 
-- Полная казахская клавиатура с кириллицей и специальными символами (Ә, Ғ, Қ, Ң, Ө, Ұ, Ү, Һ, І)
-- Автоматические подсказки при вводе неправильных слов
-- Поддержка как виртуальной, так и физической клавиатуры
-- Адаптивный дизайн для мобильных устройств
-- Тактильная обратная связь (вибрация) на поддерживаемых устройствах
+- **Тіркелу және кіру** — логин/құпиясөз, bcrypt хэштеу, JWT httpOnly cookie-де.
+- **Деңгей картасы** — 3 бөлім, 15 деңгей. Әр деңгей алдыңғысын өткенде ашылады, 0–3 жұлдыз.
+- **Жаттығулар** әр деңгейде:
+  - 🃏 Флешкарталар — жаңа сөздер (аударып көру анимациясымен)
+  - 🧩 Аудармасын тап — kk→ru және ru→kk, 4 нұсқа
+  - ✅ Дұрыс па, қате ме? — бұрынғы «Ойын», `dictionary.json` бойынша
+  - ✍️ Диктант — орыс пернетақтасымен терілген сөйлемді қазақ әріптерімен түзету
+- **Ойындар** бөлімі — бұрынғы Диктант (Hunspell, 54 мың сөз), Ойын және T9 пернетақта.
+- **Марапаттар** — XP, күндік серия, 12 жетістік, деңгей соңындағы конфетти.
+- **Белсенділік** — апталық XP диаграммасы, 4 апталық карта, соңғы әрекеттер.
+- **Профиль** — атын өзгерту, 14 аватар, статистика.
 
-## Словарь
+## Құрылым
 
-Словарь находится в `public/dictionary.json`. Вы можете добавлять новые пары слов в формате:
-
-```json
-{
-  "неправильное": "правильное",
-  "калай": "қалай",
-  "жаксы": "жақсы"
-}
+```
+client/              Vite + React 19 + TypeScript + react-router
+server/              Express + bcryptjs + jsonwebtoken + zod
+netlify/functions/   Express-ті Netlify Function ретінде іске қосатын обёртка
+netlify.toml         Netlify баптаулары (build, /api проксиі, SPA fallback)
 ```
 
-## Available Scripts
+Сыртқы дерекқор жоқ. Деңгейлер, аватарлар және жетістіктер — кодпен бірге жүретін JSON.
+Пайдаланушы деректері:
 
-In the project directory, you can run:
+- **локалды** — `server/.data/` ішіндегі JSON файлдар;
+- **Netlify-да** — Netlify Blobs (Netlify-дың кірістірілген қоймасы).
 
-### `npm start`
+## Локалды іске қосу
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+npm install
+cp server/.env.example server/.env   # JWT_SECRET мәнін өзгертіңіз
+npm run dev                           # http://localhost:5173
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Netlify-ға деплой
 
-### `npm test`
+1. Репозиторийді GitHub-қа push жасаңыз.
+2. Netlify → **Add new site → Import an existing project** → репозиторийді таңдаңыз.
+   Build баптаулары `netlify.toml`-дан автоматты түрде алынады.
+3. **Site configuration → Environment variables** бөлімінде `JWT_SECRET` қосыңыз
+   (ұзын кездейсоқ жол, мысалы `openssl rand -hex 48`).
+4. **Deploy site**. Сайт пен API бір доменде жұмыс істейді (`/api/*` → функция).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`JWT_SECRET`-ті кейін өзгертсеңіз, барлық пайдаланушылар қайта кіруі керек болады.
 
-### `npm run build`
+## XP ережелері
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Әрекет | XP |
+|---|---|
+| Аудармасын тап / Дұрыс па, қате ме — дұрыс жауап | +2 |
+| Диктант — дұрыс сөз | +3 |
+| Флешкарталар (тек бірінші рет) | +5 |
+| Деңгейді бірінші рет аяқтау | +20 |
+| Өтілген деңгейді қайталау | ×0.5 |
+| Ойындар бөліміндегі жаттығу | +1 / дұрыс (макс. 20) |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Жұлдыздар: дәлдік ≥90% → 3, ≥75% → 2, ≥50% → 1. Деңгей жұлдызға қарамастан ашылады.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Мазмұнды өзгерту
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Деңгейлер, сөздер және жаттығулар `server/src/content/levels.json` файлында.
+Өзгерткеннен кейін қайта деплой жасаңыз — пайдаланушылардың прогресі сақталады.
+Деңгейдің `id`-ін өзгертпеңіз: прогресс соған байланған.

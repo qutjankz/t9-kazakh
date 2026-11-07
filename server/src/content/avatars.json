@@ -1,0 +1,16 @@
+[
+  { "id": "fox", "emoji": "🦊", "label": "Түлкі" },
+  { "id": "wolf", "emoji": "🐺", "label": "Қасқыр" },
+  { "id": "eagle", "emoji": "🦅", "label": "Бүркіт" },
+  { "id": "horse", "emoji": "🐴", "label": "Жылқы" },
+  { "id": "snow-leopard", "emoji": "🐆", "label": "Барыс" },
+  { "id": "camel", "emoji": "🐫", "label": "Түйе" },
+  { "id": "owl", "emoji": "🦉", "label": "Үкі" },
+  { "id": "bear", "emoji": "🐻", "label": "Аю" },
+  { "id": "deer", "emoji": "🦌", "label": "Бұғы" },
+  { "id": "cat", "emoji": "🐱", "label": "Мысық" },
+  { "id": "tulip", "emoji": "🌷", "label": "Қызғалдақ" },
+  { "id": "mountain", "emoji": "⛰️", "label": "Тау" },
+  { "id": "star", "emoji": "⭐", "label": "Жұлдыз" },
+  { "id": "yurt", "emoji": "⛺", "label": "Киіз үй" }
+]

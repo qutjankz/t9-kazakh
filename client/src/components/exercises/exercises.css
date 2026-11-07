@@ -1,0 +1,581 @@
+/* ---------- Runner shell ---------- */
+
+.runner {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.runner-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 16px 8px;
+}
+
+.runner-close {
+  border: none;
+  background: none;
+  font-size: 22px;
+  color: var(--locked-dark);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 10px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.runner-close:hover {
+  color: var(--text);
+  background: var(--bg-soft);
+}
+
+.runner-step {
+  font-weight: 800;
+  color: var(--locked-dark);
+  font-size: 14px;
+  min-width: 34px;
+  text-align: right;
+}
+
+.progress-track {
+  flex: 1;
+  height: 16px;
+  background: var(--locked);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: relative;
+  height: 100%;
+  min-width: 16px;
+  background: var(--green);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.progress-shine {
+  position: absolute;
+  top: 3px;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.runner-body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px 160px;
+}
+
+/* ---------- Exercise common ---------- */
+
+.exercise {
+  width: 100%;
+  max-width: 600px;
+  padding-top: 24px;
+  animation: fade-in 0.3s ease-out both;
+}
+
+.exercise-loading {
+  text-align: center;
+  color: var(--muted);
+  padding-top: 80px;
+}
+
+.exercise-title {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.exercise-subtitle {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+/* ---------- Feedback bar ---------- */
+
+.feedback-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 2px solid var(--border);
+  background: var(--bg);
+  z-index: 20;
+}
+
+.feedback-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: flex-end;
+}
+
+.feedback-inner .btn {
+  max-width: 200px;
+}
+
+.feedback-correct {
+  background: var(--green-soft);
+  border-top-color: transparent;
+  animation: slide-up 0.25s ease-out;
+}
+
+.feedback-wrong {
+  background: var(--red-soft);
+  border-top-color: transparent;
+  animation: slide-up 0.25s ease-out;
+}
+
+.feedback-reveal {
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.feedback-message {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.feedback-icon {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.feedback-correct .feedback-icon,
+.feedback-correct .feedback-title {
+  color: var(--green-dark);
+}
+
+.feedback-wrong .feedback-icon,
+.feedback-wrong .feedback-title,
+.feedback-wrong .feedback-answer {
+  color: var(--red-dark);
+}
+
+.feedback-title {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.feedback-answer {
+  font-weight: 700;
+  font-size: 16px;
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  .feedback-inner .btn {
+    max-width: none;
+  }
+
+  .feedback-reveal {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ---------- Flashcards ---------- */
+
+.flashcard-stage {
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.flashcard {
+  position: relative;
+  width: min(100%, 380px);
+  aspect-ratio: 4 / 3;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.34, 1.2, 0.64, 1);
+  font-family: inherit;
+}
+
+.flashcard.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 24px;
+  border: 2px solid var(--border);
+  border-bottom-width: 6px;
+  background: #fff;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: var(--blue-soft);
+  border-color: #84d8ff;
+}
+
+.flashcard-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--purple-dark);
+  background: #f3e1ff;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.flashcard-word {
+  font-size: clamp(32px, 8vw, 44px);
+  font-weight: 900;
+  color: var(--text);
+}
+
+.flashcard-hint {
+  color: var(--locked-dark);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.flashcard-word-small {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--blue-dark);
+}
+
+.flashcard-translation {
+  font-size: clamp(26px, 6vw, 34px);
+  font-weight: 900;
+  color: var(--text);
+  text-align: center;
+}
+
+.flashcard-example {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ---------- Multiple choice ---------- */
+
+.mc-prompt {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.mc-prompt-mascot {
+  font-size: 64px;
+  line-height: 1;
+  animation: wiggle 2.4s ease-in-out infinite;
+}
+
+.speech-bubble {
+  position: relative;
+  padding: 14px 20px;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-left: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.mc-options {
+  display: grid;
+  gap: 12px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+  background: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, transform 0.08s;
+}
+
+.choice:hover:not(:disabled) {
+  background: var(--bg-soft);
+}
+
+.choice:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+
+.choice-key {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--locked-dark);
+}
+
+.choice.is-selected {
+  border-color: #84d8ff;
+  background: var(--blue-soft);
+  color: var(--blue-dark);
+}
+
+.choice.is-selected .choice-key {
+  border-color: #84d8ff;
+  color: var(--blue-dark);
+}
+
+.choice.is-correct {
+  border-color: #a5ed6e;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  animation: bounce 0.5s ease-out;
+}
+
+.choice.is-wrong {
+  border-color: #ffb2b2;
+  background: var(--red-soft);
+  color: var(--red-dark);
+}
+
+.choice:disabled {
+  cursor: default;
+}
+
+/* ---------- True / false ---------- */
+
+.tf-word {
+  margin: 20px auto 36px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 26px 40px;
+  border: 2px solid var(--border);
+  border-bottom-width: 6px;
+  border-radius: 24px;
+  font-size: clamp(30px, 8vw, 44px);
+  font-weight: 900;
+  text-align: center;
+  word-break: break-word;
+}
+
+.tf-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.tf-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 12px;
+  border: 2px solid var(--border);
+  border-bottom-width: 5px;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.08s, background 0.15s, opacity 0.2s;
+}
+
+.tf-btn:active:not(:disabled) {
+  transform: translateY(3px);
+  border-bottom-width: 2px;
+}
+
+.tf-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  color: #fff;
+}
+
+.tf-yes .tf-icon {
+  background: var(--green);
+}
+
+.tf-no .tf-icon {
+  background: var(--red);
+}
+
+.tf-btn.is-correct {
+  background: var(--green-soft);
+  border-color: #a5ed6e;
+  animation: bounce 0.5s ease-out;
+}
+
+.tf-btn.is-wrong {
+  background: var(--red-soft);
+  border-color: #ffb2b2;
+}
+
+.tf-btn.is-dim {
+  opacity: 0.45;
+}
+
+.tf-btn:disabled {
+  cursor: default;
+}
+
+/* ---------- Dictation ---------- */
+
+.dictation-prompt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  background: var(--bg-soft);
+  border: 2px dashed var(--border-dark);
+}
+
+.dictation-prompt-label {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.dictation-prompt-text {
+  font-size: 22px;
+  font-weight: 800;
+  text-decoration: underline wavy var(--red);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 6px;
+}
+
+.dictation-field {
+  resize: none;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.kz-letters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.kz-letter {
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--border);
+  border-bottom-width: 4px;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.08s, background 0.12s;
+}
+
+.kz-letter:hover:not(:disabled) {
+  background: var(--blue-soft);
+  border-color: #84d8ff;
+}
+
+.kz-letter:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+
+.kz-letter:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.dictation-diff {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.diff-ok,
+.diff-bad {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.diff-ok {
+  background: var(--green-soft);
+  color: var(--green-dark);
+}
+
+.diff-bad {
+  background: var(--red-soft);
+  color: var(--red-dark);
+  cursor: help;
+}

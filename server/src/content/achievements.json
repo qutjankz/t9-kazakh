@@ -1,0 +1,14 @@
+[
+  { "id": "first-level", "title": "Алғашқы қадам", "description": "Бірінші деңгейді тамамдадың", "icon": "🎯", "triggerType": "LEVELS_COMPLETED", "triggerValue": 1 },
+  { "id": "five-levels", "title": "Қарқын алды", "description": "5 деңгей тамамдалды", "icon": "🚀", "triggerType": "LEVELS_COMPLETED", "triggerValue": 5 },
+  { "id": "ten-levels", "title": "Жартысынан өттің", "description": "10 деңгей тамамдалды", "icon": "🏅", "triggerType": "LEVELS_COMPLETED", "triggerValue": 10 },
+  { "id": "all-levels", "title": "Қазақ тілінің шебері", "description": "Барлық деңгейлер тамамдалды", "icon": "👑", "triggerType": "LEVELS_COMPLETED", "triggerValue": 15 },
+  { "id": "streak-3", "title": "Тұрақты бастама", "description": "3 күн қатарынан жаттықтың", "icon": "🔥", "triggerType": "STREAK_DAYS", "triggerValue": 3 },
+  { "id": "streak-7", "title": "Апта оты", "description": "7 күн қатарынан жаттықтың", "icon": "🔥", "triggerType": "STREAK_DAYS", "triggerValue": 7 },
+  { "id": "streak-30", "title": "Темір тәртіп", "description": "30 күн қатарынан жаттықтың", "icon": "💎", "triggerType": "STREAK_DAYS", "triggerValue": 30 },
+  { "id": "perfect-1", "title": "Мінсіз!", "description": "Бір деңгейді 3 жұлдызға тамамдадың", "icon": "🌟", "triggerType": "PERFECT_SCORE", "triggerValue": 1 },
+  { "id": "xp-100", "title": "Білім іздеушісі", "description": "100 XP жинадың", "icon": "📘", "triggerType": "TOTAL_XP", "triggerValue": 100 },
+  { "id": "xp-1000", "title": "Білімдар", "description": "1000 XP жинадың", "icon": "📗", "triggerType": "TOTAL_XP", "triggerValue": 1000 },
+  { "id": "xp-5000", "title": "Тіл білгірі", "description": "5000 XP жинадың", "icon": "📙", "triggerType": "TOTAL_XP", "triggerValue": 5000 },
+  { "id": "games-20", "title": "Ойын сүйер", "description": "20 рет жаттығу ойынын ойнадың", "icon": "🎮", "triggerType": "GAMES_PLAYED", "triggerValue": 20 }
+]
