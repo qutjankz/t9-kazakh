@@ -36,7 +36,7 @@ const AuthPage: React.FC<{ mode: 'login' | 'register' }> = ({ mode }) => {
     <div className="auth">
       <div className="auth-hero">
         <div className="auth-mascot anim-bounce">🦊</div>
-        <div className="auth-brand">qazaqsha</div>
+        <div className="auth-brand">soz tuzet</div>
         <p className="auth-tagline">Қазақ тілін ойнап үйрен</p>
       </div>
 

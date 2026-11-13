@@ -19,7 +19,7 @@ const AppShell: React.FC = () => {
   return (
     <div className="shell">
       <nav className="sidenav" aria-label="Негізгі мәзір">
-        <div className="brand">qazaqsha</div>
+        <div className="brand">soz tuzet</div>
         {NAV.map((n) => (
           <NavLink key={n.to} to={n.to} end={n.end} className={({ isActive }) => `nav-item ${isActive ? 'is-active' : ''}`}>
             <span className="nav-icon">{n.icon}</span>
@@ -30,7 +30,7 @@ const AppShell: React.FC = () => {
 
       <div className="shell-main">
         <header className="topbar">
-          <div className="brand brand-mobile">qazaqsha</div>
+          <div className="brand brand-mobile">soz tuzet</div>
           <div className="topbar-stats">
             <span className="stat-pill stat-streak" title="Күнделікті серия">
               🔥 {user?.currentStreak ?? 0}
